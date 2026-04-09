@@ -1,6 +1,7 @@
 node {
     stage('Clone') {
-        echo 'Clonage du projet'
+        checkout scm
+        echo 'Clonage du projet terminé'
     }
 
     stage('Build') {
