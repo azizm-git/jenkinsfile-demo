@@ -1,23 +1,32 @@
 node {
 
-    stage('Clone') {
-        checkout scm
-        echo 'Clonage du projet terminé'
-    }
+    try {
 
-    stage('Build') {
-        sh 'javac Main.java'
-    }
+        stage('Clone') {
+            checkout scm
+            echo 'Clonage du projet terminé'
+        }
 
-    stage('Test') {
-        sh 'echo "Tests OK ✅"'
-    }
+        stage('Build') {
+            sh 'javac Main.java'
+        }
 
-    stage('Run') {
-        sh 'java Main'
-    }
+        stage('Test') {
+            sh 'echo "Tests OK ✅"'
+        }
 
-    stage('Finish') {
-        echo 'Pipeline terminé'
+        stage('Run') {
+            sh 'java Main'
+        }
+
+        stage('Finish') {
+            echo 'Pipeline terminé'
+        }
+
+    } catch (err) {
+        echo 'Erreur dans le pipeline ❌'
+        throw err
+    } finally {
+        echo 'Fin du pipeline (toujours exécuté)'
     }
 }
