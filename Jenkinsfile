@@ -1,32 +1,32 @@
-node {
+pipeline {
+    agent any
 
-    try {
-
+    stages {
         stage('Clone') {
-            checkout scm
-            echo 'Clonage du projet terminé'
+            steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/azizm-git/jenkinsfile-demo.git']])
+                echo 'Clonage terminé ✅'
+            }
         }
-
         stage('Build') {
-            sh 'javac Main.java'
+            steps {
+                sh 'javac Main.java'
+                echo 'Compilation terminée ✅'
+            }
         }
-
-        stage('Test') {
-            sh 'echo "Tests OK ✅"'
-        }
-
         stage('Run') {
-            sh 'java Main'
+            steps {
+                sh 'java Main'
+                echo 'Exécution terminée ✅'
+            }
         }
-
-        stage('Finish') {
-            echo 'Pipeline terminé'
+    }
+    post {
+        success {
+            echo 'Pipeline Déclaratif — Succès 🎉'
         }
-
-    } catch (err) {
-        echo 'Erreur dans le pipeline ❌'
-        throw err
-    } finally {
-        echo 'Fin du pipeline (toujours exécuté)'
+        failure {
+            echo 'Pipeline Déclaratif — Échec ❌'
+        }
     }
 }
